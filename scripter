@@ -4,6 +4,7 @@ use warnings;
 use strict;
 use diagnostics;
 use feature qw(say);
+use Getopt::Std;
 
 #####################
 #   Automate coding files with default content
@@ -12,6 +13,13 @@ use feature qw(say);
 #	File:   scripter.pl
 #
 #####################
+
+#####################
+# CHECKS
+
+checkARGV(@ARGV);
+
+
 
 #####################
 # VARIABLES
@@ -26,7 +34,20 @@ searchFile($fileName);
 
 
 #####################
-# SUBROUTINES
+# SUBS
+
+sub checkARGV {
+    my @arguments = @_;
+    my $numberARGV =  $#ARGV +1;
+    unless (@ARGV >= 1) {
+        say "You did not provide the right # of arguments";
+        say "Please provide your file name";
+        exit;
+    }
+#    say "ARGV is @ARGV\n ARGV # is $numberARGV";
+    
+}
+
 sub searchFile {
     my ($fileName) = @_;
     my ($file) = $fileName =~ /.(\w+$)/;    #search file extension
