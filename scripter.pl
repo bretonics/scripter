@@ -10,7 +10,7 @@ use Getopt::Std;
 #   Automate coding files with default content
 #
 # 	Created by: Andres Breton
-#	File:       scripter.pl
+#	File:       scripter.pl ©
 #
 #####################
 
@@ -99,4 +99,5 @@ sub touchFile   {               #file maker
 sub perms {
     my ($fileName)= @_;
     chmod $mode, $fileName;
+    system("open $fileName");
 }
