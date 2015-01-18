@@ -28,6 +28,11 @@ my $mode = 0755;
 
 my @fileExtensions = qw(pl rb py c);    #File extensions available to write. Add extensions here and template for extension in sub "touchFile"
 
+# Color Output
+my $grnTxt = "\e[1;32m";
+my $redTxt = "\e[1;31m";
+my $NC = "\e[0m";
+
 #####################
 # CALLS
 searchFile($fileName);
@@ -52,6 +57,10 @@ sub searchFile {
     my ($file) = $fileName =~ /.(\w+$)/;        #get file extension
     foreach my $fileType (@fileExtensions) {    #search for file type in @fileType
         if ($fileType eq $file) {
+            if(-e $fileName) {                  #check file exists
+                say "$fileName ${redTxt}not${NC} created. $fileName already exists.\nTerminating...", $!;
+                exit;
+            }
             touchFile($fileType, $fileName);    #make file
             exit;
         }
@@ -73,7 +82,7 @@ sub touchFile   {               #file maker
     
     if ($fileType eq "pl") {    #perl file
         print OUTFILE "#!/usr/bin/perl \n\nuse warnings;\nuse strict;\nuse diagnostics;\nuse feature qw(say);\n\n#####################\n#\n# 	Created by: $user \n#	File: $fileName\n#\n#####################\n\n";     #perl file content
-        say "File $fileName created successfully.";
+        say "File $fileName created ${grnTxt}successfully${NC}.";
         perms($fileName);
     }
     
@@ -96,8 +105,12 @@ sub touchFile   {               #file maker
     }
 }
 
+#sub fileSuccess {
+#    say "$fileName created ${grnTxt}successfully${NC}.";
+#    my ($fileName)= @_;
+#    chmod $mode, $fileName;
+#}
 sub perms {
     my ($fileName)= @_;
     chmod $mode, $fileName;
-    system("open $fileName");
 }
