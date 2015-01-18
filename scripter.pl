@@ -58,7 +58,7 @@ sub searchFile {
     foreach my $fileType (@fileExtensions) {    #search for file type in @fileType
         if ($fileType eq $file) {
             if(-e $fileName) {                  #check file exists
-                say "$fileName ${redTxt}not${NC} created. $fileName already exists.\nTerminating...", $!;
+                say "$fileName ${redTxt}not${NC} created, file already exists.\nTerminating...", $!;
                 exit;
             }
             touchFile($fileType, $fileName);    #make file
@@ -82,35 +82,28 @@ sub touchFile   {               #file maker
     
     if ($fileType eq "pl") {    #perl file
         print OUTFILE "#!/usr/bin/perl \n\nuse warnings;\nuse strict;\nuse diagnostics;\nuse feature qw(say);\n\n#####################\n#\n# 	Created by: $user \n#	File: $fileName\n#\n#####################\n\n";     #perl file content
-        say "File $fileName created ${grnTxt}successfully${NC}.";
-        perms($fileName);
+        fileSuccess($fileName);
     }
     
     if ($fileType eq "rb") {    #ruby file
         print OUTFILE "#!/usr/bin/ruby\n\n#####################\n#\n# 	Created by: $user \n#	File: $fileName\n#\n#####################\n\n";     #ruby file content
-        say "File $fileName created successfully.";
-        perms($fileName);
+        fileSuccess($fileName);
     }
     
     if ($fileType eq "py") {    #python file
         print OUTFILE "#!/usr/bin/python\n\nimport sys\n\n#####################\n#\n# 	Created by: $user\n#	File: $fileName\n#\n#####################\n\n";     #python file content
-        say "File $fileName created successfully.";
-        perms($fileName);
+        fileSuccess($fileName);
     }
     
     if ($fileType eq "c") {     #c file
         print OUTFILE "//\n//  $fileName\n//\n//\n//  Created by $user \n//\n//\n#include <stdio.h>\n#include <stdlib.h>\n\n#include <string.h>\n\nint main(){\n\n}";       #c file content
-        say "File $fileName created successfully.";
-        perms($fileName);
+        fileSuccess($fileName);
     }
 }
 
-#sub fileSuccess {
-#    say "$fileName created ${grnTxt}successfully${NC}.";
-#    my ($fileName)= @_;
-#    chmod $mode, $fileName;
-#}
-sub perms {
+sub fileSuccess {
+    say "$fileName created ${grnTxt}successfully${NC}.";
     my ($fileName)= @_;
     chmod $mode, $fileName;
+    my $openFile = exec("open", "$fileName")
 }
