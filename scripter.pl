@@ -73,7 +73,7 @@ sub searchFile {
 sub touchFile   {               #file maker
     my ($fileType, $fileName) = @_;
     my ($name) = $fileName =~ /(\w+).$fileType/;
-    my $user = $ENV{LOGNAME};
+    my $user = "Andres Breton"; #or $ENV{LOGNAME}
     
     unless (open(OUTFILE, ">", $fileName)) {     #check out file write access
         say "Unable to write file. Please check permissions";
@@ -81,7 +81,7 @@ sub touchFile   {               #file maker
     }
     
     if ($fileType eq "pl") {    #perl file
-        print OUTFILE "#!/usr/bin/perl \n\nuse warnings;\nuse strict;\nuse diagnostics;\nuse feature qw(say);\n\n#####################\n#\n# 	Created by: $user \n#	File: $fileName\n#\n#####################\n\n";     #perl file content
+        print OUTFILE "#!/usr/bin/perl \n\nuse warnings;\nuse strict;\nuse diagnostics;\nuse feature qw(say);\nuse Bio::Seq;\nuse Bio::SeqIO;\n#####################\n#\n# 	Created by: $user \n#	File: $fileName\n#\n#####################\n\n";     #perl file content
         fileSuccess($fileName);
     }
     
