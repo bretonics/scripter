@@ -1,10 +1,7 @@
 #!/usr/bin/perl 
 
-use warnings;
-use strict;
-use diagnostics;
-use feature qw(say);
-use Getopt::Std;
+use warnings; use strict; use diagnostics; use feature qw(say);
+
 
 #####################
 #   Automate coding files with default content
@@ -14,13 +11,12 @@ use Getopt::Std;
 #
 #####################
 
-#####################
-# CHECKS
 
+#-------------------------------------------------------------------------
+# CHECKS
 checkARGV(@ARGV);
 
-
-#####################
+-------------------------------------------------------------------------
 # VARIABLES
 my $fileName = $ARGV[0];
 chomp $fileName;
@@ -32,15 +28,13 @@ my @fileExtensions = qw(pl rb py c);    #File extensions available to write. Add
 my $grnTxt = "\e[1;32m";
 my $redTxt = "\e[1;31m";
 my $NC = "\e[0m";
-
-#####################
+-------------------------------------------------------------------------
 # CALLS
 searchFile($fileName);
 
 
-#####################
+-------------------------------------------------------------------------
 # SUBS
-
 sub checkARGV {
     my @arguments = @_;
     my $numberARGV =  $#ARGV +1;
