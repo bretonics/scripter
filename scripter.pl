@@ -16,11 +16,10 @@ use warnings; use strict; use diagnostics; use feature qw(say);
 # CHECKS
 checkARGV(@ARGV);
 
--------------------------------------------------------------------------
+#-------------------------------------------------------------------------
 # VARIABLES
-my $fileName = $ARGV[0];
-chomp $fileName;
-my $mode = 0755;
+my $fileName = $ARGV[0]; chomp $fileName;
+my $perms = 0755;
 
 my @fileExtensions = qw(pl rb py c);    #File extensions available to write. Add extensions here and template for extension in sub "touchFile"
 
@@ -28,19 +27,19 @@ my @fileExtensions = qw(pl rb py c);    #File extensions available to write. Add
 my $grnTxt = "\e[1;32m";
 my $redTxt = "\e[1;31m";
 my $NC = "\e[0m";
--------------------------------------------------------------------------
+#-------------------------------------------------------------------------
 # CALLS
 searchFile($fileName);
 
 
--------------------------------------------------------------------------
+#-------------------------------------------------------------------------
 # SUBS
 sub checkARGV {
     my @arguments = @_;
     my $numberARGV =  $#ARGV +1;
     unless (@ARGV >= 1) {
         say "You did not provide the right number of arguments";
-        say "Please provide your file name";
+        say "Please provide your file name", $!;
         exit;
     }
     
@@ -98,6 +97,6 @@ sub touchFile   {               #file maker
 sub fileSuccess {
     say "$fileName created ${grnTxt}successfully${NC}.";
     my ($fileName)= @_;
-    chmod $mode, $fileName;
+    chmod $perms, $fileName;
     my $openFile = exec("open", "$fileName")
 }
