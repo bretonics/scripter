@@ -1,7 +1,7 @@
 #!/usr/bin/perl 
 
 use warnings; use strict; use diagnostics; use feature qw(say);
-
+use Getopt::Long; use Pod::Usage;
 
 #####################
 #   Automate coding files with default content
@@ -13,27 +13,51 @@ use warnings; use strict; use diagnostics; use feature qw(say);
 
 
 #-------------------------------------------------------------------------
+# COMMAND LINE
+
+my $DESCRIPTION = "";
+my $LICENSE = "";
+my $usage= "\n\n $0 [options]\n
+Options:
+    -f      File     
+    -help   Shows this message
+\n";
+
+
+# OPTIONS
+GetOptions(
+    'd:s'   => \$DESCRIPTION,   #script description?
+    'l:s'   => \$LICENSE,       #license? MIT, GPL, Apache...
+    help    => sub{pod2usage($usage);}
+)or pod2usage(2);
+
+
+#-------------------------------------------------------------------------
 # CHECKS
+
 checkARGV(@ARGV);
 
 #-------------------------------------------------------------------------
 # VARIABLES
+
 my $fileName = $ARGV[0]; chomp $fileName;
-my $perms = 0755;
+my $perms = 0755; #what default file permissions do you want?
 
 my @fileExtensions = qw(pl rb py c);    #File extensions available to write. Add extensions here and template for extension in sub "touchFile"
 
-# Color Output
+# Color Output...looking nice
 my $grnTxt = "\e[1;32m";
 my $redTxt = "\e[1;31m";
 my $NC = "\e[0m";
+
 #-------------------------------------------------------------------------
 # CALLS
-searchFile($fileName);
 
+searchFile($fileName);
 
 #-------------------------------------------------------------------------
 # SUBS
+
 sub checkARGV {
     my @arguments = @_;
     my $numberARGV =  $#ARGV +1;
