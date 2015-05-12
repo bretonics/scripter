@@ -1,5 +1,6 @@
 scripter
 ========
+[![GitHub version](https://badge.fury.io/gh/bretonics%2Fscripter.svg)](http://badge.fury.io/gh/bretonics%2Fscripter)
 
 Automate code template files; Perl, Ruby, Python, C
 
