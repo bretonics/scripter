@@ -3,8 +3,8 @@ Scripter
 [![GitHub version](https://badge.fury.io/gh/bretonics%2Fscripter.svg)](http://badge.fury.io/gh/bretonics%2Fscripter)
 [![Github Issues](http://githubbadges.herokuapp.com/bretonics/scripter/issues.svg)](https://github.com/bretonics/scripter/issues)
 [![Pending Pull-Requests](http://githubbadges.herokuapp.com/bretonics/scripter/pulls.svg)](https://github.com/bretonics/scripter/pulls)
-[![GitHub license](https://img.shields.io/badge/License-MIT-blue.svg)]()
-![](https://reposs.herokuapp.com/?path=bretonics/scripter)
+[![GitHub license](https://img.shields.io/badge/License-GPL2-blue.svg)]()
+![](https://reposs.herokuapp.com/?path=bretonics/scripter&color=orange)
 
 
 
