@@ -1,7 +1,7 @@
 Scripter 
 =============
 [![GitHub version](https://badge.fury.io/gh/bretonics%2Fscripter.svg)](http://badge.fury.io/gh/bretonics%2Fscripter)
-![repo size](https://reposs.herokuapp.com/?path=bretonics/scripter)
+![](https://reposs.herokuapp.com/?path=bretonics/scripter)
 
 
 Automate code template files; Perl, Ruby, Python, C
@@ -21,3 +21,7 @@ In this example, the program will create a perl file named myPerlFile.pl in the 
 
 ###Add to Path
 Best practice dictates adding the absolute path of scripter to your `$PATH variable` so you can call it from any location.
+
+
+##License
+Under the following [licence] (https://github.com/bretonics/scripter/blob/master/LICENSE).
