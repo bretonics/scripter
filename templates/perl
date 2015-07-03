@@ -1,0 +1,12 @@
+#!/usr/bin/perl 
+
+use warnings; use strict; use diagnostics;
+use feature qw(say);
+
+# =============================================
+#
+#	Created by: 
+#	File:		
+#	Function:	
+#
+# =============================================
