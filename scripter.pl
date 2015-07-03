@@ -98,10 +98,14 @@ sub touchFile   {               #file maker
         die "Can not open $fileName for writing.\n", $!;
     }
     
+    # Search for template file matching extension provided 
     foreach my $key (%templates) {
         if ($key eq $extension) {
-            my $template = $templates{$extension};
-
+            my $template = $templates{$extension}; #get template of file desired
+            system("cat templates/$template");
+            print OUTFILE `cat templates/$template` unless($? != 0); #create file from template
+            fileSuccess($fileName);
+            last;
         }
     }
 }
