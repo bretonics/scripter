@@ -3,6 +3,12 @@
 use warnings; use strict; use diagnostics; use feature qw(say);
 use Getopt::Long; use Pod::Usage;
 
+use File::Basename qw(dirname);
+use Cwd qw(abs_path);
+use lib (dirname abs_path $0). "/lib";
+
+use header;
+
 # =============================================
 #   Automate coding files with default content
 #
@@ -16,10 +22,15 @@ use Getopt::Long; use Pod::Usage;
 # COMMAND LINE
 
 my $DESCRIPTION = "";
-my $LICENSE = "NONE"; #default license
+my $LICENSE = ""; #default license
+my $TYPE = ""; #default for special script types, i.e.) modules
 my $usage= "\n\n $0 [options]\n
 Options:
-    -f      File     
+    -description    File description
+    -license        License
+    -type           Special file type
+        Module: -type module
+
     -help   Shows this message
 \n";
 
@@ -28,6 +39,7 @@ Options:
 GetOptions(
     'd:s'   => \$DESCRIPTION,   #script description?
     'l:s'   => \$LICENSE,       #license? MIT, GPL, Apache...
+    't:s'   => \$TYPE,          #special type
     help    => sub{pod2usage($usage);}
 )or pod2usage(2);
 
@@ -43,8 +55,9 @@ checkARGV(@ARGV);
 my $fileName = $ARGV[0]; chomp $fileName;
 my $perms = 0755; #what default file permissions do you want?
 
-my @fileExtensions = qw(pl py r rb c);    #File extensions available to write. Add extensions here and template for extension in sub "touchFile"
-my %templates = (pl=>"perl",py=>"python",r=>"r",rb=>"ruby",c=>"c"); #extension -> template file hash
+my @fileExtensions = qw(pl pm py r rb c);    #File extensions available to write. Add extensions here and template for extension in sub "touchFile"
+my %templates = (pl=>"perl",pm=>"perl",py=>"python",
+                r=>"r",rb=>"ruby",c=>"c"); #extension -> template file hash
 
 # Color Output...looking nice
 my $grnTxt = "\e[1;32m";
@@ -54,9 +67,9 @@ my $NC = "\e[0m";
 #-------------------------------------------------------------------------
 # CALLS
 
-newFile($fileName);
+newFile($fileName); 
 
-#-------------------------------------------------------------------------
+# -------------------------------------------------------------------------
 # SUBS
 
 sub checkARGV {
@@ -67,7 +80,6 @@ sub checkARGV {
         say "Please provide your file name", $!;
         exit;
     }
-    
 }
 
 sub newFile {
@@ -102,8 +114,11 @@ sub touchFile   {               #file maker
     foreach my $key (%templates) {
         if ($key eq $extension) {
             my $template = $templates{$extension}; #get template of file desired
-            system("cat templates/$template"); #test system call
-            print OUTFILE `cat templates/$template` unless($? != 0); #create file from template
+            open(SYSCALL,"cat templates/$template |") or die "Could not find template file $!"; #sys call
+            while(<SYSCALL>){
+                print OUTFILE; #print template content to new file
+            }
+            close(SYSCALL);
             fileSuccess($fileName);
             last;
         }
