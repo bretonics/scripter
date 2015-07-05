@@ -16,7 +16,7 @@ use Getopt::Long; use Pod::Usage;
 # COMMAND LINE
 
 my $DESCRIPTION = "";
-my $LICENSE = "";
+my $LICENSE = "NONE"; #default license
 my $usage= "\n\n $0 [options]\n
 Options:
     -f      File     
@@ -73,23 +73,23 @@ sub checkARGV {
 sub newFile {
     my ($fileName) = @_;
     my ($ext) = $fileName =~ /.(\w+$)/;        #get file extension
-    foreach my $extension (@fileExtensions) {    #search for file type in @fileType
+    foreach my $extension (@fileExtensions) {    #search for file type in @fileExtensions
         if ($extension eq $ext) {
             if(-e $fileName) {                  #check file exists
                 say "$fileName ${redTxt}not${NC} created, file already exists.\nTerminating...", $!;
                 exit;
             }
-            touchFile($fileName,$extension);    #make file
+            touchFile($fileName,$extension,$DESCRIPTION,$LICENSE);    #make file
             exit;
         }
     }
     say "You did not provide a proper file type. File extension provided was \"$ext\"\n";
-    say "Valid extension include:";
+    say "Valid extensions are:";
     print join("\n",@fileExtensions), "\n\n";
 }
 
 sub touchFile   {               #file maker
-    my ($fileName, $extension) = @_;
+    my ($fileName,$extension,$DESCRIPTION,$LICENSE) = @_;
     my ($name) = $fileName =~ /(\w+).$extension/;
     my $user = "Andres Breton"; #or $ENV{LOGNAME}
     
@@ -102,7 +102,7 @@ sub touchFile   {               #file maker
     foreach my $key (%templates) {
         if ($key eq $extension) {
             my $template = $templates{$extension}; #get template of file desired
-            system("cat templates/$template");
+            system("cat templates/$template"); #test system call
             print OUTFILE `cat templates/$template` unless($? != 0); #create file from template
             fileSuccess($fileName);
             last;
@@ -112,7 +112,7 @@ sub touchFile   {               #file maker
 
 sub fileSuccess {
     my ($fileName)= @_;
-    chmod $perms, $fileName;
+    chmod $perms, $fileName; #change file permissions
     say "$fileName created ${grnTxt}successfully${NC}.\nOpening file...";
     my $openFile = exec("open", "$fileName")
 }
