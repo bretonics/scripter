@@ -1,0 +1,17 @@
+package ;
+
+use warnings; use strict; use feature qw(say);
+
+use Exporter qw(import);
+our @ISA = qw(Exporter);
+our @EXPORT = qw(); #functions exported by default
+
+sub {
+    
+}
+
+sub {
+
+}
+
+1; #return true value

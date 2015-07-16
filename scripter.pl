@@ -1,39 +1,77 @@
 #!/usr/bin/perl 
 
 use warnings; use strict; use diagnostics; use feature qw(say);
+use Getopt::Long; use Pod::Usage;
 
+use File::Basename qw(dirname);
+use Cwd qw(abs_path);
+use lib (dirname abs_path $0). "/lib";
 
-#####################
+use header;
+
+# =============================================
 #   Automate coding files with default content
 #
 # 	Created by: Andres Breton
 #	File:       scripter.pl ©
 #
-#####################
+# =============================================
+
+
+#-------------------------------------------------------------------------
+# COMMAND LINE
+
+my $DESCRIPTION = "";
+my $LICENSE = ""; #default license
+my $TYPE = ""; #default for special script types, i.e.) modules
+my $usage= "\n\n $0 [options]\n
+Options:
+    -description    File description
+    -license        License
+    -type           Special file type
+        Module: -type module
+
+    -help   Shows this message
+\n";
+
+
+# OPTIONS
+GetOptions(
+    'd:s'   => \$DESCRIPTION,   #script description?
+    'l:s'   => \$LICENSE,       #license? MIT, GPL, Apache...
+    't:s'   => \$TYPE,          #special type
+    help    => sub{pod2usage($usage);}
+)or pod2usage(2);
 
 
 #-------------------------------------------------------------------------
 # CHECKS
+
 checkARGV(@ARGV);
 
 #-------------------------------------------------------------------------
 # VARIABLES
+
 my $fileName = $ARGV[0]; chomp $fileName;
-my $perms = 0755;
+my $perms = 0755; #what default file permissions do you want?
 
-my @fileExtensions = qw(pl rb py c);    #File extensions available to write. Add extensions here and template for extension in sub "touchFile"
+my @fileExtensions = qw(pl pm py r rb c);    #File extensions available to write. Add extensions here and template for extension in sub "touchFile"
+my %templates = (pl=>"perl",pm=>"perl",py=>"python",
+                r=>"r",rb=>"ruby",c=>"c"); #extension -> template file hash
 
-# Color Output
+# Color Output...looking nice
 my $grnTxt = "\e[1;32m";
 my $redTxt = "\e[1;31m";
 my $NC = "\e[0m";
+
 #-------------------------------------------------------------------------
 # CALLS
-searchFile($fileName);
 
+newFile($fileName); 
 
-#-------------------------------------------------------------------------
+# -------------------------------------------------------------------------
 # SUBS
+
 sub checkARGV {
     my @arguments = @_;
     my $numberARGV =  $#ARGV +1;
@@ -42,30 +80,29 @@ sub checkARGV {
         say "Please provide your file name", $!;
         exit;
     }
-    
 }
 
-sub searchFile {
+sub newFile {
     my ($fileName) = @_;
-    my ($file) = $fileName =~ /.(\w+$)/;        #get file extension
-    foreach my $fileType (@fileExtensions) {    #search for file type in @fileType
-        if ($fileType eq $file) {
+    my ($ext) = $fileName =~ /.(\w+$)/;        #get file extension
+    foreach my $extension (@fileExtensions) {    #search for file type in @fileExtensions
+        if ($extension eq $ext) {
             if(-e $fileName) {                  #check file exists
                 say "$fileName ${redTxt}not${NC} created, file already exists.\nTerminating...", $!;
                 exit;
             }
-            touchFile($fileType, $fileName);    #make file
+            touchFile($fileName,$extension,$DESCRIPTION,$LICENSE);    #make file
             exit;
         }
     }
-    say "You did not provide a proper file type. File extension provided was \"$file\"\n";
-    say "Valid extension include:";
+    say "You did not provide a proper file type. File extension provided was \"$ext\"\n";
+    say "Valid extensions are:";
     print join("\n",@fileExtensions), "\n\n";
 }
 
 sub touchFile   {               #file maker
-    my ($fileType, $fileName) = @_;
-    my ($name) = $fileName =~ /(\w+).$fileType/;
+    my ($fileName,$extension,$DESCRIPTION,$LICENSE) = @_;
+    my ($name) = $fileName =~ /(\w+).$extension/;
     my $user = "Andres Breton"; #or $ENV{LOGNAME}
     
     unless (open(OUTFILE, ">", $fileName)) {     #check out file write access
@@ -73,30 +110,24 @@ sub touchFile   {               #file maker
         die "Can not open $fileName for writing.\n", $!;
     }
     
-    if ($fileType eq "pl") {    #perl file
-        print OUTFILE "#!/usr/bin/perl \n\nuse warnings;\nuse strict;\nuse diagnostics;\nuse feature qw(say);\nuse Bio::Seq;\nuse Bio::SeqIO;\n#####################\n#\n# 	Created by: $user \n#	File: $fileName\n#\n#####################\n\n";     #perl file content
-        fileSuccess($fileName);
-    }
-    
-    if ($fileType eq "rb") {    #ruby file
-        print OUTFILE "#!/usr/bin/ruby\n\n#####################\n#\n# 	Created by: $user \n#	File: $fileName\n#\n#####################\n\n";     #ruby file content
-        fileSuccess($fileName);
-    }
-    
-    if ($fileType eq "py") {    #python file
-        print OUTFILE "#!/usr/bin/python\n\nimport sys\n\n#####################\n#\n# 	Created by: $user\n#	File: $fileName\n#\n#####################\n\n";     #python file content
-        fileSuccess($fileName);
-    }
-    
-    if ($fileType eq "c") {     #c file
-        print OUTFILE "//\n//  $fileName\n//\n//\n//  Created by $user \n//\n//\n#include <stdio.h>\n#include <stdlib.h>\n\n#include <string.h>\n\nint main(){\n\n}";       #c file content
-        fileSuccess($fileName);
+    # Search for template file matching extension provided 
+    foreach my $key (%templates) {
+        if ($key eq $extension) {
+            my $template = $templates{$extension}; #get template of file desired
+            open(SYSCALL,"cat templates/$template |") or die "Could not find template file $!"; #sys call
+            while(<SYSCALL>){
+                print OUTFILE; #print template content to new file
+            }
+            close(SYSCALL);
+            fileSuccess($fileName);
+            last;
+        }
     }
 }
 
 sub fileSuccess {
-    say "$fileName created ${grnTxt}successfully${NC}.";
     my ($fileName)= @_;
-    chmod $perms, $fileName;
+    chmod $perms, $fileName; #change file permissions
+    say "$fileName created ${grnTxt}successfully${NC}.\nOpening file...";
     my $openFile = exec("open", "$fileName")
 }
