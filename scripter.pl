@@ -5,12 +5,12 @@ use Getopt::Long; use Pod::Usage;
 
 use FindBin; use lib "$FindBin::RealBin/lib";
 
-use Header;
+use Content;
 
 # =============================================================================
-#   CAPITAN:  Andres Breton
+#   CAPITAN: Andres Breton
 #   FILE: scripter.pl
-#   LICENSE:  GPL2
+#   LICENSE: GPL2
 #   USAGE: Automate file creation with default content/structure
 #
 # =============================================================================
@@ -51,7 +51,7 @@ checkARGV(@ARGV);
 # VARIABLES
 
 my $REALBIN = "$FindBin::RealBin";
-my $fileName = $ARGV[0]; chomp $fileName;
+# my $fileName = @ARGV; chomp $fileName;
 my $perms = 0755; #what default file permissions do you want?
 my $USER = "Andres Breton"; #or $ENV{LOGNAME}
 
@@ -66,8 +66,9 @@ my $NC = "\e[0m";
 
 #-------------------------------------------------------------------------
 # CALLS
-
-newFile($fileName);
+foreach my $fileName (@ARGV) {
+    newFile($fileName);
+}
 
 # -------------------------------------------------------------------------
 # SUBS
@@ -89,10 +90,11 @@ sub newFile {
         if ($extension eq $ext) {
             if(-e $fileName) {                  #check file exists. Do NOT overide
                 say "$fileName ${redTxt}not${NC} created, file already exists.\nTerminating...", $!;
-                exit;
+                last;
+            } else {
+                touchFile($fileName,$extension);    #make file
+                last;
             }
-            touchFile($fileName,$extension,$DESCRIPTION,$LICENSE);    #make file
-            exit;
         }
     }
     say "You did not provide a proper file type. File extension provided was \"$ext\"\n";
@@ -101,7 +103,7 @@ sub newFile {
 }
 
 sub touchFile   {               #file maker
-    my ($fileName,$extension,$DESCRIPTION,$LICENSE) = @_;
+    my ($fileName,$extension) = @_;
     my ($name) = $fileName =~ /(\w+).$extension/;
 
     unless (open(OUTFILE, ">", $fileName)) {     #check out file write access
@@ -113,20 +115,36 @@ sub touchFile   {               #file maker
     foreach my $key (%templates) {
         if ($key eq $extension) {
             my $template = $templates{$extension}; #get template of file desired
-            open(SYSCALL, "cat $REALBIN/templates/$template |") or die "Could not find template file $!"; #sys call
-            while(<SYSCALL>){
-                print OUTFILE; #print template content to new file
-            }
-            close(SYSCALL);
+            my $returnVal = writeContent($fileName, $USER, $LICENSE, $REALBIN, $template, \*OUTFILE);
+            # open(SYSCALL, "cat $REALBIN/templates/$template |") or die "Could not find template file $!"; #sys call
+            #
+            # while(<SYSCALL>){
+            #     if ($_ =~ /^#\s+CAPITAN:/) {
+            #         chomp $_;
+            #         print OUTFILE "$_ $USER\n"; next;
+            #     }
+            #     if ($_ =~ /^#\s+FILE:/) {
+            #         chomp $_;
+            #         $0 =~ /.*\/(.+)/;
+            #         print OUTFILE "$_ $1\n"; next;
+            #     }
+            #     if ($_ =~ /^#\s+LICENSE:/) {
+            #         chomp $_;
+            #         print OUTFILE "$_ $LICENSE\n"; next;
+            #     }
+            #     print OUTFILE; #print template content to new file
+            # }
+            # close(SYSCALL); close OUTFILE;
+            say "This is return = $returnVal";
             fileSuccess($fileName);
             last;
         }
-    }
+    } close OUTFILE;
 }
 
 sub fileSuccess {
     my ($fileName)= @_;
     chmod $perms, $fileName; #change file permissions
-    say "$fileName created ${grnTxt}successfully${NC}.\nOpening file...";
+    say "$fileName created ${grnTxt}successfully${NC} \nOpening file...";
     my $openFile = exec("open", "$fileName")
 }
