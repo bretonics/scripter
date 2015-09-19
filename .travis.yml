@@ -1,9 +1,10 @@
 language: perl
 perl:
-  - "5.20"
   - "5.18"
 os:
 - linux
 - osx
 script:
   - cpanm --version
+before_install:
+    - if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew install cpanm; fi
