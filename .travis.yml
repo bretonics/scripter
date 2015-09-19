@@ -2,3 +2,6 @@ language: perl
 perl:
   - "5.20"
   - "5.18"
+os:
+- linux
+- osx
