@@ -5,3 +5,5 @@ perl:
 os:
 - linux
 - osx
+script:
+  - cpanm --version
