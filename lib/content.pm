@@ -18,7 +18,7 @@ sub writeContent {
         if ($_ =~ /^#\s+FILE:/) {
             chomp $_;
             $0 =~ /.*\/(.+)/;
-            print $OUTFILE "$_ $1\n"; next;
+            print $OUTFILE "$_ $fileName\n"; next;
         }
         if ($_ =~ /^#\s+LICENSE:/) {
             chomp $_;
