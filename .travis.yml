@@ -4,4 +4,4 @@ perl:
 os:
 - linux
 - osx
-install: false
+install: true
