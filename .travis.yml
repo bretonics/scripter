@@ -4,7 +4,4 @@ perl:
 os:
 - linux
 - osx
-script:
-  - cpanm --version
-before_install:
-    - if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew install cpanm; fi
+install: false
