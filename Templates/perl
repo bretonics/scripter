@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-use warnings; use strict; use diagnostics; use feature qw(say);
+use strict; use warnings; use diagnostics; use feature qw(say);
 use Getopt::Long; use Pod::Usage;
 
 use FindBin; use lib "$FindBin::RealBin/lib";
@@ -22,7 +22,9 @@ use lib (dirname abs_path $0). "/lib";
 
 #-------------------------------------------------------------------------
 # COMMAND LINE
-
+my $FILE = "";
+my = "";
+my = "";
 my $usage = "\n\n $0 [options]\n
 Options:
     -
@@ -30,8 +32,9 @@ Options:
 
 # OPTIONS
 GetOptions(
-    ''      =>\,
     'file:s'        =>\$FILE,
+    ''      =>\,
+    ''      =>\,
     help            =>sub{pod2usage($usage);}
 )or pod2usage(2);
 #-------------------------------------------------------------------------
@@ -40,3 +43,20 @@ argChecks();
 
 #-------------------------------------------------------------------------
 # SUBS
+
+#---------------------------------------------------------
+# $result = argChecks();
+#---------------------------------------------------------
+# This function checks for arguments passed in command-line
+# using global variables
+#---------------------------------------------------------
+sub argChecks {
+
+}
+
+#---------------------------------------------------------
+# $result = ();
+#---------------------------------------------------------
+# This function
+#
+#---------------------------------------------------------
