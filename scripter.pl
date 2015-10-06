@@ -116,26 +116,6 @@ sub touchFile   {               #file maker
         if ($key eq $extension) {
             my $template = $templates{$extension}; #get template of file desired
             my $returnVal = writeContent($fileName, $USER, $LICENSE, $REALBIN, $template, \*OUTFILE);
-            # open(SYSCALL, "cat $REALBIN/templates/$template |") or die "Could not find template file $!"; #sys call
-            #
-            # while(<SYSCALL>){
-            #     if ($_ =~ /^#\s+CAPITAN:/) {
-            #         chomp $_;
-            #         print OUTFILE "$_ $USER\n"; next;
-            #     }
-            #     if ($_ =~ /^#\s+FILE:/) {
-            #         chomp $_;
-            #         $0 =~ /.*\/(.+)/;
-            #         print OUTFILE "$_ $1\n"; next;
-            #     }
-            #     if ($_ =~ /^#\s+LICENSE:/) {
-            #         chomp $_;
-            #         print OUTFILE "$_ $LICENSE\n"; next;
-            #     }
-            #     print OUTFILE; #print template content to new file
-            # }
-            # close(SYSCALL); close OUTFILE;
-            say "This is return = $returnVal";
             fileSuccess($fileName);
             last;
         }
