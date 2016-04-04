@@ -16,9 +16,7 @@ use Content;
 # =============================================================================
 
 
-#-------------------------------------------------------------------------
-# COMMAND LINE
-
+#-------------------------------| COMMAND LINE |-------------------------------#
 my $DESCRIPTION = "";
 my $LICENSE = ""; #default license
 my $TYPE = ""; #default for special script types, i.e.) modules
@@ -41,17 +39,11 @@ GetOptions(
     help    => sub{pod2usage($usage);}
 )or pod2usage(2);
 
-
-#-------------------------------------------------------------------------
 # CHECKS
-
 checkARGV(@ARGV);
 
-#-------------------------------------------------------------------------
-# VARIABLES
-
+#-------------------------------| VARIBALES |-------------------------------#
 my $REALBIN = "$FindBin::RealBin";
-# my $fileName = @ARGV; chomp $fileName;
 my $perms = 0755; #what default file permissions do you want?
 my $USER = "Andres Breton"; #or $ENV{LOGNAME}
 
@@ -60,19 +52,16 @@ my %templates = (pl=>"perl",pm=>"perl",py=>"python",
                 r=>"r",rb=>"ruby",c=>"c"); #extension -> template file hash
 
 # Color Output...looking nice
-my $grnTxt = "\e[1;32m";
-my $redTxt = "\e[1;31m";
-my $NC = "\e[0m";
+my $grnTxt = "\[\e[1;32m\]";
+my $redTxt = "\[\e[1;31m\]";
+my $NC = "\[\e[0m\]";
 
-#-------------------------------------------------------------------------
-# CALLS
+#-------------------------------| CALLS |-------------------------------#
 foreach my $fileName (@ARGV) {
     newFile($fileName);
 }
 
-# -------------------------------------------------------------------------
-# SUBS
-
+#-------------------------------| SUBS |-------------------------------#
 sub checkARGV {
     my @arguments = @_;
     my $numberARGV =  $#ARGV +1;
