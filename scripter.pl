@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 use warnings; use strict; use diagnostics; use feature qw(say);
 use Getopt::Long; use Pod::Usage;
