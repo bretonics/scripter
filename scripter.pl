@@ -52,9 +52,9 @@ my %templates = (pl=>"perl",pm=>"perl",py=>"python",
                 r=>"r",rb=>"ruby",c=>"c"); #extension -> template file hash
 
 # Color Output...looking nice
-my $grnTxt = "\[\e[1;32m\]";
-my $redTxt = "\[\e[1;31m\]";
-my $NC = "\[\e[0m\]";
+my $GREEN = "\e[1;32m";
+my $RED = "\e[1;31m";
+my $NC = "\e[0m";
 
 #-------------------------------| CALLS |-------------------------------#
 foreach my $fileName (@ARGV) {
@@ -78,7 +78,7 @@ sub newFile {
     foreach my $extension (@fileExtensions) {    #search for file type in @fileExtensions
         if ($extension eq $ext) {
             if(-e $fileName) {                  #check file exists. Do NOT overide
-                say "$fileName ${redTxt}not${NC} created, file already exists.\nTerminating...", $!;
+                say "$fileName ${RED}not${NC} created, file already exists.\nTerminating...", $!;
                 last;
             } else {
                 touchFile($fileName,$extension);    #make file
@@ -114,6 +114,6 @@ sub touchFile   {               #file maker
 sub fileSuccess {
     my ($fileName)= @_;
     chmod $perms, $fileName; #change file permissions
-    say "$fileName created ${grnTxt}successfully${NC} \nOpening file...";
+    say "$fileName created ${GREEN}successfully${NC} \nOpening file...";
     my $openFile = exec("open", "$fileName")
 }
