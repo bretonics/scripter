@@ -24,28 +24,27 @@ use lib (dirname abs_path $0). "/lib";
 
 #-------------------------------------------------------------------------------
 # COMMAND LINE
-my $FILE = "";
-my = "";
-my = "";
-my $usage = "\n\n$0 [options]\n
+my $ = "";
+my $usage= "
+
+ [options]
+
 Options:
-    -file   Input file
     -
     -
-    -help   Show this message
-\n";
+    -help   Shows this message
+
+";
+
 
 # OPTIONS
 GetOptions(
-    'file=s'        =>\$FILE,
-    '=s'        =>\$,
-    ':s'        =>\$,
-    ''      =>\,
-    ''      =>\,
-    help            =>sub{pod2usage($usage);}
+    ''   =>$,
+    ''   =>$,
+    help    =>sub{pod2usage($usage);}
 )or pod2usage(2);
 
-checkCLA();
+checkCLA(); #check command lone arguments passed
 #-------------------------------------------------------------------------------
 # CALLS
 
@@ -61,8 +60,8 @@ checkCLA();
 # $output = Dies from errors
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 sub checkCLA {
-    unless ($FILE) {
-        die "You did not provide an input file.", $!, $usage;
+    unless ($) {
+        die "", $!, $usage;
     }
     return;
 }
