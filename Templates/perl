@@ -25,7 +25,8 @@ use lib (dirname abs_path $0). "/lib";
 #-------------------------------------------------------------------------------
 # COMMAND LINE
 my $ = "";
-my $usage= "
+my @ = "";
+my $usage = "
 
  [options]
 
@@ -39,9 +40,9 @@ Options:
 
 # OPTIONS
 GetOptions(
-    ''   =>$,
-    ''   =>$,
-    help    =>sub{pod2usage($usage);}
+    ''   => $,
+    ''   => @,
+    help    => sub{pod2usage($usage);}
 )or pod2usage(2);
 
 checkCLA(); #check command lone arguments passed
@@ -60,6 +61,7 @@ checkCLA(); #check command lone arguments passed
 # $output = Dies from errors
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 sub checkCLA {
+    my () = @_;
     unless ($) {
         die "", $!, $usage;
     }
@@ -75,7 +77,7 @@ sub checkCLA {
 # $return = ();
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 sub function_name {
-
+    my () = @_;
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
