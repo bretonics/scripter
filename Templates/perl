@@ -40,12 +40,12 @@ Options:
 
 # OPTIONS
 GetOptions(
-    ''   => $,
-    ''   => @,
+    ''   => \$,
+    ''   => \@,
     help    => sub{pod2usage($usage);}
 )or pod2usage(2);
 
-checkCLA(); #check command lone arguments passed
+checkCLA(); #check command line arguments passed
 #-------------------------------------------------------------------------------
 # CALLS
 
