@@ -26,9 +26,7 @@ use lib (dirname abs_path $0). "/lib";
 # COMMAND LINE
 my $ = "";
 my @ = "";
-my $usage = "
-
- [options]
+my $usage = "\n\n$0 [options]\n
 
 Options:
     -
