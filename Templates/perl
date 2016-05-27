@@ -20,17 +20,17 @@ use lib (dirname abs_path $0). "/lib";
 # ==============================================================================
 
 #-------------------------------------------------------------------------------
-# VARIABLES
+# GLOBALS
+
 
 #-------------------------------------------------------------------------------
 # COMMAND LINE
-my $ = "";
-my @ = "";
+my $SCALAR;
+my @ARRAY;
 my $usage = "\n\n$0 [options]\n
-
 Options:
-    -
-    -
+    -scalar
+    -array
     -help   Shows this message
 
 ";
@@ -38,12 +38,16 @@ Options:
 
 # OPTIONS
 GetOptions(
-    ''   => \$,
-    ''   => \@,
+    'scalar'   => \$SCALAR,
+    'array'   => \@ARRAY,
     help    => sub{pod2usage($usage);}
 )or pod2usage(2);
 
 checkCLA(); #check command line arguments passed
+#-------------------------------------------------------------------------------
+# VARIABLES
+
+
 #-------------------------------------------------------------------------------
 # CALLS
 
@@ -76,6 +80,9 @@ sub checkCLA {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 sub function_name {
     my () = @_;
+
+
+    return;
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -86,3 +93,9 @@ sub function_name {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # $output =
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+sub function_name {
+    my () = @_;
+
+
+    return;
+}
