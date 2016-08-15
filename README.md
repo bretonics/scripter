@@ -1,8 +1,8 @@
 Scripter 
 ===
 [![GitHub version](https://badge.fury.io/gh/bretonics%2Fscripter.svg)](http://badge.fury.io/gh/bretonics%2Fscripter)
-[![Github Issues](http://githubbadges.herokuapp.com/bretonics/scripter/issues.svg)](https://github.com/bretonics/scripter/issues)
-[![Pending Pull-Requests](http://githubbadges.herokuapp.com/bretonics/scripter/pulls.svg)](https://github.com/bretonics/scripter/pulls)
+[![Github Issues](http://githubbadges.herokuapp.com/bretonics/scripter/issues)](https://github.com/bretonics/scripter/issues)
+[![Pending Pull-Requests](http://githubbadges.herokuapp.com/bretonics/scripter/pulls)](https://github.com/bretonics/scripter/pulls)
 [![GitHub license](https://img.shields.io/badge/License-GPL2-blue.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 ![](https://reposs.herokuapp.com/?path=bretonics/scripter&color=orange)
 
